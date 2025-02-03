@@ -1,3 +1,6 @@
+$fs = 0.2; 
+$fa = 5; 
+
 wall_thickness = 5.0;
 top_platform_thickness = 4.0;
 bottom_platform_thickness = 8.0;
@@ -12,6 +15,10 @@ PCB_Height = 20.0;
 PCB_Sonic_Height = 12.0;
 PCB_Sonic_Radius = 8.0;
 PCB_Sonic_Offset = 13.0;
+PCB_Hole_Radius = 1.0;
+PCB_Hole_X_Offset = 20.5;
+PCB_Hole_Y_Offset = 8.25;
+
 
 
 inner_height = total_height - top_platform_thickness - bottom_platform_thickness;
@@ -36,29 +43,63 @@ difference() {
                     square(inner_height,  outer_radius - wall_thickness);    
         }
     }       
-}
-
-translate([0,0,280])
-{
-    rotate([0,0,0])
+    translate([0,0,total_height - top_platform_thickness + PCB_Sonic_Height])
     {
-         color("Red") Utrasonic();
+        rotate([0,180,0])
+        {
+            Utrasonic();
+        }
     }
 }
+translate([0,0,total_height])
+{
+    // On top of the Platform
+    translate([0,0, PCB_Depth + PCB_Sonic_Height - top_platform_thickness]) rotate([0,180,0])
+    {
+        color("Red") Utrasonic();
+    }
+    
+    difference() {
+        #cube([20,20,PCB_Sonic_Height + PCB_Depth - top_platform_thickness]);
+        
+    }
+}
+
    
 module Utrasonic() {
-    union() {
-        translate([-(PCB_Width / 2), -(PCB_Height / 2), 0])
-        {
-            cube([PCB_Width, PCB_Height, PCB_Depth]);
+    
+    difference()
+    {
+        
+        union() {
+            translate([-(PCB_Width / 2), -(PCB_Height / 2), 0])
+            {
+                cube([PCB_Width, PCB_Height, PCB_Depth]);
+            }
+            translate([PCB_Sonic_Offset, 0, PCB_Depth])
+            {
+                cylinder(h = PCB_Sonic_Height, r = PCB_Sonic_Radius);
+            }
+            translate([-PCB_Sonic_Offset, 0, PCB_Depth])
+            {
+                cylinder(h = PCB_Sonic_Height, r = PCB_Sonic_Radius);
+            }
         }
-        translate([PCB_Sonic_Offset, 0, 0])
+        translate([PCB_Hole_X_Offset, PCB_Hole_Y_Offset, -1])
         {
-            cylinder(h = PCB_Sonic_Height, r = PCB_Sonic_Radius);
+            cylinder(h = PCB_Depth + 2, r = PCB_Hole_Radius);
         }
-        translate([-PCB_Sonic_Offset, 0, 0])
+        translate([-PCB_Hole_X_Offset, PCB_Hole_Y_Offset, -1])
         {
-            cylinder(h = PCB_Sonic_Height, r = PCB_Sonic_Radius);
+            cylinder(h = PCB_Depth + 2, r = PCB_Hole_Radius);
+        }
+        translate([PCB_Hole_X_Offset, -PCB_Hole_Y_Offset, -1])
+        {
+            cylinder(h = PCB_Depth + 2, r = PCB_Hole_Radius);
+        }
+        translate([-PCB_Hole_X_Offset, -PCB_Hole_Y_Offset, -1])
+        {
+            cylinder(h = PCB_Depth + 2, r = PCB_Hole_Radius);
         }
     }
 }
