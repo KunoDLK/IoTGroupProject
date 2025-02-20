@@ -45,17 +45,46 @@ Mark & Andrea:
 - Server Data
   - trends ect.
 
+## MQTT:
 
 URL:
-8c0f88a85b5045dd80b56a73fb589735.s1.eu.hivemq.cloud
+c79e2ea5e65e40f6b79ba3a3aad7c19f.s1.eu.hivemq.cloud
 Port:
 8883
 Websocket Port:
 8884
-TLS MQTT URL:
-8c0f88a85b5045dd80b56a73fb589735.s1.eu.hivemq.cloud:8883
-TLS Websocket URL:
-8c0f88a85b5045dd80b56a73fb589735.s1.eu.hivemq.cloud:8884/mqtt
+
+User:admin
+Password:Password1  
+
+## MQTT Data:
+
+![Alt text](<Screenshot 2025-02-13 at 11.49.15.png>)
+### Data Organisation:
+{Postcode area code}/{Street Name}/{House Number}
+
+TS16/FORMBY_WALK/01/
+
+### Sensor Data
+./Sensors/Current
+{
+  "fillLevel": 75,
+  "weight": 15.4,
+  "density": 1.2
+} 
+
+### Environment Data
+./Environment/Current
+{
+  "temp": 22.5,
+  "humidity": 60
+}
+
+./Environment/Daily
+{
+  "low": 5.5,
+  "high" 22
+}
 
 
 
