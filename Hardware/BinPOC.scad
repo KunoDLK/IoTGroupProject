@@ -4,7 +4,6 @@ $fa = 5;
 wall_thickness = 5.0;
 top_platform_thickness = 4.0;
 bottom_platform_thickness = 8.0;
-total_height = 250.0;
 outer_radius = 100.0;
 number_of_legs = 3;
 leg_radial_thickness = 20.0;
@@ -29,53 +28,27 @@ PI_Width = 56;
 PI_Support_Height = 10;
 PI_Support_Width = 5;
 
-inner_height = total_height - top_platform_thickness - bottom_platform_thickness;
 pie_angle = (360 / number_of_legs);
 
 Main();
 
-translate([outer_radius * 3, 0 ,-(total_height - top_platform_thickness)])
-{
-    intersection()
-    {
-        Main();
-        translate([0,0,total_height - top_platform_thickness])
-        {
-            cylinder(h = 50, r = outer_radius);
-        }    
-    }
-}
 
 module Main()
 {
     //Subtract smaller cylinder to create hollow
     difference() {
-        cylinder(h = total_height, r = outer_radius);
+        cylinder(h = top_platform_thickness, r = outer_radius);
         
-        translate([0, 0, bottom_platform_thickness])
-        { 
-            cylinder(h = inner_height, r = outer_radius - wall_thickness);
-        }
-        
-        // Subtract three Pies to leave the legs
-        translate([0, 0, bottom_platform_thickness])
-        {
-            for (i = [1:number_of_legs]) 
-            {
-                rotate([0, 0, i * pie_angle]) 
-                    rotate_extrude(angle=pie_angle - leg_radial_thickness)
-                        square(inner_height,  outer_radius - wall_thickness);    
-            }
-        }       
-        translate([0,0,total_height - top_platform_thickness + PCB_Sonic_Height])
+        translate([0,0, PCB_Sonic_Height + PCB_Depth])
         {
             rotate([0,180,0])
             {
-                Utrasonic();
+                #Utrasonic();
             }
         }
     }
-    translate([0,0,total_height])
+    
+    translate([0,0,top_platform_thickness])
     {    
         //Ontop of the suport frame
         sonic_height = PCB_Sonic_Height + PCB_Depth - top_platform_thickness;
@@ -158,7 +131,7 @@ module RPi()
 
 module Hole()
 {
-    cylinder(h = 1.4, r = 2.7 / 2);
+    cylinder(h = 3, r = 2.7 / 2);
 }
    
 module Support()
