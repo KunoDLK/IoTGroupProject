@@ -1,106 +1,131 @@
 $fs = 0.2; 
 $fa = 5; 
 
-wall_thickness = 5.0;
-top_platform_thickness = 4.0;
-bottom_platform_thickness = 8.0;
-outer_radius = 100.0;
-number_of_legs = 3;
-leg_radial_thickness = 20.0;
-
-PCB_Width = 45.0;
+PCB_Width = 46.0;
 PCB_Depth = 1.5;
-PCB_Height = 20.0;
-PCB_Sonic_Height = 12.0;
-PCB_Sonic_Radius = 8.0;
+PCB_Height = 21.0;
+PCB_Sonic_Height = 11;
+PCB_Sonic_Radius = 8.5;
 PCB_Sonic_Offset = 13.0;
-PCB_Hole_Radius = 1.0;
-PCB_Hole_X_Offset = 20.5;
-PCB_Hole_Y_Offset = 8.25;
-PCB_Hole_Clearence = 1;
+PCB_Hole_Radius = 0.8;
+PCB_Hole_X_Offset = 21.25;
+PCB_Hole_Y_Offset = 8.75;
 
-Sonic_Support_X = 40;
-Sonic_Support_Y = 40;
-Sonic_Vertical_Clearence = 5;
+Sonic_Support_Depth = 1.5;
 
 PI_Height = 85;
 PI_Width = 56;
 PI_Support_Height = 10;
 PI_Support_Width = 5;
+PI_Support_Offset_Y = 24.5;
+PI_Support_X_Offset_1 = 19;
+PI_Support_X_Offset_2 = 39;
 
-pie_angle = (360 / number_of_legs);
+Joint_dove_height = 5;
+Joint_dove_depth = 5;
+Joint_dove_rear_width = 10;
+Joint_dove_front_width = 5;
 
-Main();
+showPI = true;
+splitView = false;
+
+
+if (splitView)
+{
+    intersection()
+    {
+        Main();
+        
+        translate([-PI_Height/2,0,0]) cube([PI_Height, PI_Width, PCB_Sonic_Height + PCB_Depth + PI_Support_Height + 3]);
+    }
+}
+else
+{
+    Main();
+}
+
+module Viewer()
+{
+    if (showPI)
+    {
+        translate([0,0,PI_Support_Height + PCB_Depth + PCB_Sonic_Height]) RPi();
+    }
+
+    Main();
+}
 
 
 module Main()
 {
-    //Subtract smaller cylinder to create hollow
-    difference() {
-        cylinder(h = top_platform_thickness, r = outer_radius);
+    union()
+    {
+        difference()
+        {
+            color("Yellow") Base();
         
-        translate([0,0, PCB_Sonic_Height + PCB_Depth])
-        {
-            rotate([0,180,0])
+            rotate([180,0,0]) 
             {
-                #Utrasonic();
-            }
-        }
-    }
-    
-    translate([0,0,top_platform_thickness])
-    {    
-        //Ontop of the suport frame
-        sonic_height = PCB_Sonic_Height + PCB_Depth - top_platform_thickness;
-        
-        // Ultrasonic sensor holder
-        difference() 
-        {
-            translate([-(Sonic_Support_X / 2), -(Sonic_Support_Y / 2), 0])
-            {
-                cube([Sonic_Support_X,Sonic_Support_Y,sonic_height]);
-            }
-            
-            sonic_subtract_X = PCB_Hole_X_Offset - PCB_Hole_Radius - PCB_Hole_Clearence;
-            sonic_subtract_Y = PCB_Hole_Y_Offset - PCB_Hole_Radius - PCB_Hole_Clearence;
-    
-            translate([-(PCB_Width / 2), -(sonic_subtract_Y), 0])
-            {
-                cube([PCB_Width, sonic_subtract_Y * 2, sonic_height + Sonic_Vertical_Clearence]);
-            }
-            
-            translate([-(sonic_subtract_X), -(PCB_Height / 2), 0])
-            {
-                cube([sonic_subtract_X * 2, PCB_Height, sonic_height + Sonic_Vertical_Clearence]);
-            }
-            translate([0,0, PCB_Depth + PCB_Sonic_Height - top_platform_thickness]) rotate([0,180,0])
-            {
-                color("Red") Utrasonic();
-            }
-        }
-        // Rasbery PI Suport
-        translate([0,0,sonic_height])
-        {
-            translate([-(PI_Height / 2) + 3.5,-(PI_Width / 2) + 3.5,0])
-            {
-                Support();
-                translate([58, 0 ,0])
+                translate([0,0,-PCB_Depth - PCB_Sonic_Height]) 
                 {
-                    Support();
+                    color("Red") Utrasonic();
+                    color("blue")
+                    {
+                        cutoutLengthWidth = PCB_Height - (4 * ((PCB_Height / 2) - (PCB_Hole_Y_Offset)));
+                        cutoutWidthLength = PCB_Width - (4 * ((PCB_Width / 2) - (PCB_Hole_X_Offset)));
+                        
+                        linear_extrude(PCB_Depth + PCB_Sonic_Height - Sonic_Support_Depth) union()
+                        {
+                            square([PCB_Width,cutoutLengthWidth], center = true);
+                            square([cutoutWidthLength, PCB_Height], center = true);
+                        }
+                    }
                 }
+                
             }
-            translate([-(PI_Height / 2) + 3.5,+(PI_Width / 2) - 3.5,0])
+        }
+        
+        translate([PI_Support_X_Offset_1,PI_Support_Offset_Y,PCB_Depth + PCB_Sonic_Height]) Support();
+        translate([-PI_Support_X_Offset_2,PI_Support_Offset_Y,PCB_Depth + PCB_Sonic_Height]) Support();
+        translate([PI_Support_X_Offset_1,-PI_Support_Offset_Y,PCB_Depth + PCB_Sonic_Height]) Support();
+        translate([-PI_Support_X_Offset_2,-PI_Support_Offset_Y,PCB_Depth + PCB_Sonic_Height]) Support();
+    }
+}
+
+module Base()
+{
+    render()
+    {
+        difference()
+        {
+            linear_extrude(PCB_Depth + PCB_Sonic_Height)
             {
-                Support();
-                translate([58, 0 ,0])
+                square([PI_Height,PI_Width], center = true);
+            }
+            
+            linear_extrude(Joint_dove_height)
+            {
+                union()
                 {
-                    Support();
+                    rotate([0,0,0]) translate([0, -PI_Width / 2,0]) Dovetail2d();
+                    rotate([0,0,90]) translate([0, -PI_Height / 2,0]) Dovetail2d();
+                    rotate([0,0,180]) translate([0, -PI_Width / 2,0]) Dovetail2d();
+                    rotate([0,0,270]) translate([0, -PI_Height / 2,0]) Dovetail2d();
                 }
             }
         }
     }
 }
 
+module Dovetail2d()
+{
+    frontOffset = Joint_dove_front_width / 2;
+    rearOffset = Joint_dove_rear_width / 2;
+                
+    polygon([[-frontOffset,0],
+    [frontOffset,0],
+    [rearOffset, Joint_dove_depth],
+    [-rearOffset, Joint_dove_depth]]);
+}
 
 module RPi()
 {
