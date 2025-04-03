@@ -21,10 +21,10 @@ PI_Support_Offset_Y = 24.5;
 PI_Support_X_Offset_1 = 19;
 PI_Support_X_Offset_2 = 39;
 
-Joint_dove_height = 5;
+Joint_dove_height = 8;
 Joint_dove_depth = 5;
-Joint_dove_rear_width = 10;
-Joint_dove_front_width = 5;
+Joint_dove_rear_width = 16;
+Joint_dove_front_width = 8;
 
 showPI = true;
 splitView = false;
