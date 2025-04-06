@@ -1,13 +1,13 @@
-$fs = 0.2; 
-$fa = 5; 
+$fs = 1; 
+$fa = 30; 
 
 PCB_Width = 46.0;
 PCB_Depth = 1.5;
 PCB_Height = 21.0;
 PCB_Sonic_Height = 11;
-PCB_Sonic_Radius = 8.5;
+PCB_Sonic_Radius = 8;
 PCB_Sonic_Offset = 13.0;
-PCB_Hole_Radius = 0.8;
+PCB_Hole_Radius = 0.7;
 PCB_Hole_X_Offset = 21.25;
 PCB_Hole_Y_Offset = 8.75;
 
@@ -26,7 +26,7 @@ Joint_dove_depth = 5;
 Joint_dove_rear_width = 16;
 Joint_dove_front_width = 8;
 
-showPI = true;
+showPI = false;
 splitView = false;
 
 
@@ -34,14 +34,14 @@ if (splitView)
 {
     intersection()
     {
-        Main();
+        Viewer();
         
         translate([-PI_Height/2,0,0]) cube([PI_Height, PI_Width, PCB_Sonic_Height + PCB_Depth + PI_Support_Height + 3]);
     }
 }
 else
 {
-    Main();
+    Viewer();
 }
 
 module Viewer()
