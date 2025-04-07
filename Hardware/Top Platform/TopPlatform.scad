@@ -1,11 +1,10 @@
-$fs = 1; 
-$fa = 30; 
+$fn = $preview ? 50 : 500;
 
 PCB_Width = 46.0;
-PCB_Depth = 1.5;
+PCB_Depth = 1.2;
 PCB_Height = 21.0;
-PCB_Sonic_Height = 11;
-PCB_Sonic_Radius = 8;
+PCB_Sonic_Height = 12.01;
+PCB_Sonic_Radius = 8.0;
 PCB_Sonic_Offset = 13.0;
 PCB_Hole_Radius = 0.7;
 PCB_Hole_X_Offset = 21.25;
