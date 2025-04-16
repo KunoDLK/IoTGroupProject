@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Bindicator.Data;
-using Bindicator.ViewModels;
-using Microsoft.EntityFrameworkCore;
-using Bindicator.Models;
-using Bindicator.Services;
+﻿using Bindicator.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bindicator.Controllers
 {
@@ -26,8 +22,16 @@ namespace Bindicator.Controllers
 
         public async Task<IActionResult> Trend(string postcode, string street, int binNumber)
         {
-            var vm = await _binTrend.GetTrendAsync(postcode, street, binNumber);
-            return View(vm);
+            var viewModel = await _binTrend.GetTrendAsync(postcode, street, binNumber);
+            return View(viewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetLatestBins()
+        {
+            var viewModel = await _binData.GetLatestBinStatusesAsync();
+            return PartialView("_BinTable", viewModel);
+        }
+
     }
 }
