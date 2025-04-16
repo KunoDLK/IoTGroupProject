@@ -1,0 +1,27 @@
+﻿@model List<Bindicator.ViewModels.BinStatusViewModel>
+
+@foreach (var bin in Model)
+{
+    var fillClass = bin.FillLevel switch
+    {
+        >= 85 => "table-danger",
+        >= 60 => "table-warning",
+        > 0 => "table-success",
+        _ => ""
+    };
+
+    <tr class="@fillClass">
+        <td>@bin.Postcode</td>
+        <td>@bin.Street</td>
+        <td>@bin.BinNumber</td>
+        <td>@bin.FillLevel %</td>
+        <td>@bin.Weight</td>
+        <td>@bin.Density</td>
+        <td>
+            @bin.Timestamp.ToLocalTime().ToString("g")<br />
+            <small class="text-muted">
+                (@(DateTime.UtcNow - bin.Timestamp).TotalMinutes:N0 mins ago)
+            </small>
+        </td>
+    </tr>
+}
