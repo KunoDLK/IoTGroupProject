@@ -1,5 +1,4 @@
-﻿// Services/DbSeeder.cs
-using Bindicator.Data;
+﻿using Bindicator.Data;
 using Bindicator.Models;
 
 public class DbSeeder

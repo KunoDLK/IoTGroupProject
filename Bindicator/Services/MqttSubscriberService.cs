@@ -30,10 +30,12 @@ public class MqttSubscriberService : BackgroundService
     /// <returns>A task that represents the background service execution.</returns>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        // Create a new MQTT client factory
         var mqttFactory = new MqttClientFactory();
 
         using var mqttClient = mqttFactory.CreateMqttClient();
 
+        // Configure TLS options for secure connection
         var mqttClientOptions = new MqttClientOptionsBuilder()
             .WithTcpServer("c79e2ea5e65e40f6b79ba3a3aad7c19f.s1.eu.hivemq.cloud", 8883)
             .WithCredentials("admin", "Password1")
@@ -43,6 +45,7 @@ public class MqttSubscriberService : BackgroundService
             })
             .Build();
 
+        // Set up event handler for when a message is received
         mqttClient.ApplicationMessageReceivedAsync += async e =>
         {
             var topic = e.ApplicationMessage.Topic;
@@ -58,11 +61,13 @@ public class MqttSubscriberService : BackgroundService
             string street = parts[1];
             if (!int.TryParse(parts[2], out int binNumber)) return;
 
+            // Create a new scope for database operations
             using var scope = _scopeFactory.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             try
             {
+                // Deserialize the payload based on the topic
                 if (topic.EndsWith("Sensors/Current", StringComparison.OrdinalIgnoreCase))
                 {
                     var data = JsonSerializer.Deserialize<SensorData>(payload, new JsonSerializerOptions
@@ -105,12 +110,15 @@ public class MqttSubscriberService : BackgroundService
             }
         };
 
+        // Connect to the MQTT broker
         await mqttClient.ConnectAsync(mqttClientOptions, stoppingToken);
 
+        // Log connection status
         var mqttSubscribeOptions = mqttFactory.CreateSubscribeOptionsBuilder()
             .WithTopicFilter(f => f.WithTopic("TS16/#").WithAtLeastOnceQoS())
             .Build();
 
+        // Subscribe to the topic
         var response = await mqttClient.SubscribeAsync(mqttSubscribeOptions, stoppingToken);
 
         Console.WriteLine("✅ Subscribed to TS16/#");
