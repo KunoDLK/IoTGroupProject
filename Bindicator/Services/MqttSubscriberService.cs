@@ -1,0 +1,112 @@
+﻿using System.Text;
+using System.Text.Json;
+using MQTTnet;
+using Bindicator.Data;
+using Bindicator.Models;
+using System.Buffers;
+
+namespace Bindicator.Services;
+
+/// <summary>
+/// Background service that subscribes to MQTT topics and processes incoming messages.
+/// </summary>
+public class MqttSubscriberService : BackgroundService
+{
+    private readonly IServiceScopeFactory _scopeFactory;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MqttSubscriberService"/> class.
+    /// </summary>
+    /// <param name="scopeFactory">The service scope factory to create scopes for database operations.</param>
+    public MqttSubscriberService(IServiceScopeFactory scopeFactory)
+    {
+        _scopeFactory = scopeFactory;
+    }
+
+    /// <summary>
+    /// Executes the background service. Connects to the MQTT broker, subscribes to topics, and processes incoming messages.
+    /// </summary>
+    /// <param name="stoppingToken">Token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the background service execution.</returns>
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        var mqttFactory = new MqttClientFactory();
+
+        using var mqttClient = mqttFactory.CreateMqttClient();
+
+        var mqttClientOptions = new MqttClientOptionsBuilder()
+            .WithTcpServer("c79e2ea5e65e40f6b79ba3a3aad7c19f.s1.eu.hivemq.cloud", 8883)
+            .WithCredentials("admin", "Password1")
+            .WithTlsOptions(tls =>
+            {
+                tls.UseTls();
+            })
+            .Build();
+
+        mqttClient.ApplicationMessageReceivedAsync += async e =>
+        {
+            var topic = e.ApplicationMessage.Topic;
+            var payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload.ToArray());
+
+            Console.WriteLine($"📥 Topic: {topic}");
+            Console.WriteLine($"🔹 Payload: {payload}");
+
+            var parts = topic.Split('/');
+            if (parts.Length < 3) return;
+
+            string postcode = parts[0];
+            string street = parts[1];
+            if (!int.TryParse(parts[2], out int binNumber)) return;
+
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            try
+            {
+                if (topic.EndsWith("Sensors/Current"))
+                {
+                    var data = JsonSerializer.Deserialize<SensorData>(payload);
+                    if (data != null)
+                    {
+                        data.Postcode = postcode;
+                        data.Street = street;
+                        data.BinNumber = binNumber;
+                        data.Timestamp = DateTime.UtcNow;
+                        db.SensorReadings.Add(data);
+                    }
+                }
+                else if (topic.EndsWith("Environment/Current"))
+                {
+                    var data = JsonSerializer.Deserialize<EnvironmentData>(payload);
+                    if (data != null)
+                    {
+                        data.Postcode = postcode;
+                        data.Street = street;
+                        data.BinNumber = binNumber;
+                        data.Timestamp = DateTime.UtcNow;
+                        db.EnvironmentReadings.Add(data);
+                    }
+                }
+
+                await db.SaveChangesAsync(stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error saving to DB: {ex.Message}");
+            }
+        };
+
+        await mqttClient.ConnectAsync(mqttClientOptions, stoppingToken);
+
+        var mqttSubscribeOptions = mqttFactory.CreateSubscribeOptionsBuilder()
+            .WithTopicFilter(f => f.WithTopic("TS16/#").WithAtLeastOnceQoS())
+            .Build();
+
+        var response = await mqttClient.SubscribeAsync(mqttSubscribeOptions, stoppingToken);
+
+        Console.WriteLine("✅ Subscribed to TS16/#");
+
+        // Keep service running
+        await Task.Delay(Timeout.Infinite, stoppingToken);
+    }
+}
