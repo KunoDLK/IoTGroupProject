@@ -63,9 +63,14 @@ public class MqttSubscriberService : BackgroundService
 
             try
             {
-                if (topic.EndsWith("Sensors/Current"))
+                if (topic.EndsWith("Sensors/Current", StringComparison.OrdinalIgnoreCase))
                 {
-                    var data = JsonSerializer.Deserialize<SensorData>(payload);
+                    var data = JsonSerializer.Deserialize<SensorData>(payload, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+
                     if (data != null)
                     {
                         data.Postcode = postcode;
@@ -75,16 +80,20 @@ public class MqttSubscriberService : BackgroundService
                         db.SensorReadings.Add(data);
                     }
                 }
-                else if (topic.EndsWith("Environment/Current"))
+                else if (topic.EndsWith("Environment/Current",StringComparison.OrdinalIgnoreCase))
                 {
-                    var data = JsonSerializer.Deserialize<EnvironmentData>(payload);
+                    var data = JsonSerializer.Deserialize<SensorData>(payload, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
                     if (data != null)
                     {
                         data.Postcode = postcode;
                         data.Street = street;
                         data.BinNumber = binNumber;
                         data.Timestamp = DateTime.UtcNow;
-                        db.EnvironmentReadings.Add(data);
+                        db.SensorReadings.Add(data);
                     }
                 }
 
