@@ -4,6 +4,18 @@
     ViewData["Title"] = "Bin Dashboard";
 }
 
+<div class="mb-3">
+    <a asp-controller="Map" asp-action="Index" class="btn btn-primary">
+        🗺️ View Map
+    </a>
+</div>
+
+<style>
+    th {
+        cursor: pointer;
+    }
+</style>
+
 <h2>Bin Dashboard</h2>
 
 <input type="text" id="binFilter" class="form-control mb-3" placeholder="Search by street or postcode" />
@@ -30,16 +42,17 @@
     <script>
         let isFiltering = false;
 
-        document.getElementById('binFilter').addEventListener('focus', () => isFiltering = true);
-        document.getElementById('binFilter').addEventListener('blur', () => isFiltering = false);
-
-        document.getElementById('binFilter').addEventListener('keyup', function () {
-            var filter = this.value.toLowerCase();
+        function applyFilter() {
+            const filter = document.getElementById('binFilter').value.toLowerCase();
             document.querySelectorAll("#binTableBody tr").forEach(function (row) {
-                var text = row.innerText.toLowerCase();
+                const text = row.innerText.toLowerCase();
                 row.style.display = text.includes(filter) ? '' : 'none';
             });
-        });
+        }
+
+        document.getElementById('binFilter').addEventListener('focus', () => isFiltering = true);
+        document.getElementById('binFilter').addEventListener('blur', () => isFiltering = false);
+        document.getElementById('binFilter').addEventListener('keyup', applyFilter);
 
         setInterval(() => {
             if (!isFiltering) {
@@ -47,8 +60,9 @@
                     .then(res => res.text())
                     .then(html => {
                         document.getElementById('binTableBody').innerHTML = html;
+                        applyFilter(); // Re-apply filtering after update
                     });
             }
-        }, 15000); // every 15s
+        }, 15000);
     </script>
 }

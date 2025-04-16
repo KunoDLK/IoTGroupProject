@@ -45,7 +45,9 @@ namespace Bindicator.Services
                 FillLevel = b.FillLevel,
                 Weight = b.Weight,
                 Density = b.Density,
-                Timestamp = b.Timestamp
+                Timestamp = b.Timestamp,
+                Latitude = b.Latitude,
+                Longitude = b.Longitude
             }).ToList();
         }
     }

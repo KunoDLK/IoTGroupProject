@@ -40,13 +40,13 @@ namespace Bindicator.Services
                 var now = DateTime.UtcNow;
                 var dummyReadings = new List<SensorData>
                 {
-                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 10, Weight = 5, Density = 0.9f, Timestamp = now.AddMinutes(-60) },
-                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 18, Weight = 5.8f, Density = 0.95f, Timestamp = now.AddMinutes(-50) },
-                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 26, Weight = 6.1f, Density = 1.0f, Timestamp = now.AddMinutes(-40) },
-                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 29, Weight = 6.5f, Density = 1.05f, Timestamp = now.AddMinutes(-30) },
-                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 72, Weight = 14.8f, Density = 1.3f, Timestamp = now.AddMinutes(-20) },
-                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 78, Weight = 15.5f, Density = 1.4f, Timestamp = now.AddMinutes(-10) },
-                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 85, Weight = 16.2f, Density = 1.5f, Timestamp = now }
+                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 10, Weight = 5, Density = 0.9f, Latitude = 54.5610, Longitude = -1.3090, Timestamp = now.AddMinutes(-60) },
+                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 18, Weight = 5.8f, Density = 0.95f, Latitude = 54.5610, Longitude = -1.3090, Timestamp = now.AddMinutes(-50) },
+                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 26, Weight = 6.1f, Density = 1.0f, Latitude = 54.5610, Longitude = -1.3090, Timestamp = now.AddMinutes(-40) },
+                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 29, Weight = 6.5f, Density = 1.05f, Latitude = 54.5610, Longitude = -1.3090, Timestamp = now.AddMinutes(-30) },
+                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 72, Weight = 14.8f, Density = 1.3f, Latitude = 54.5610, Longitude = -1.3090, Timestamp = now.AddMinutes(-20) },
+                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 78, Weight = 15.5f, Density = 1.4f, Latitude = 54.5610, Longitude = -1.3090, Timestamp = now.AddMinutes(-10) },
+                    new() { Postcode = postcode, Street = street, BinNumber = binNumber, FillLevel = 85, Weight = 16.2f, Density = 1.5f, Latitude = 54.5610, Longitude = -1.3090, Timestamp = now }
                 };
 
                 _context.SensorReadings.AddRange(dummyReadings);
