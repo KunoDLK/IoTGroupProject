@@ -51,9 +51,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            new Tablesort(document.querySelector('table'));
+            const table = document.querySelector('table');
+            if (table) {
+                new Tablesort(table);
+            }
         });
     </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

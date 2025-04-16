@@ -82,7 +82,7 @@ public class MqttSubscriberService : BackgroundService
                 }
                 else if (topic.EndsWith("Environment/Current",StringComparison.OrdinalIgnoreCase))
                 {
-                    var data = JsonSerializer.Deserialize<SensorData>(payload, new JsonSerializerOptions
+                    var data = JsonSerializer.Deserialize<EnvironmentData>(payload, new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
                     });
@@ -93,7 +93,7 @@ public class MqttSubscriberService : BackgroundService
                         data.Street = street;
                         data.BinNumber = binNumber;
                         data.Timestamp = DateTime.UtcNow;
-                        db.SensorReadings.Add(data);
+                        db.EnvironmentReadings.Add(data);
                     }
                 }
 
