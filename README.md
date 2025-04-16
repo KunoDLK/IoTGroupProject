@@ -57,6 +57,9 @@ Websocket Port:
 User:admin
 Password:Password1  
 
+## MQTT Websocket Client
+https://www.hivemq.com/demos/websocket-client/
+
 ## MQTT Data:
 
 ![Alt text](<Screenshot 2025-02-13 at 11.49.15.png>)
