@@ -7,6 +7,24 @@
     var fillLevels = Model.Readings.Select(r => r.FillLevel).ToList();
     var weights = Model.Readings.Select(r => r.Weight).ToList();
     var densities = Model.Readings.Select(r => r.Density).ToList();
+
+    // Build the spike annotations
+    var spikeAnnotations = Model.Spikes.Select((spike, index) => $@"""spike{index}"": {{
+    type: 'line',
+    xMin: '{spike.Timestamp.ToLocalTime():HH\\:mm}',
+    xMax: '{spike.Timestamp.ToLocalTime():HH\\:mm}',
+    borderColor: 'blue', // 🔵 matches fill level
+    borderWidth: 2,
+    label: {{
+        content: 'Spike: {spike.ToLevel}%',
+        enabled: true,
+        position: 'start',
+        backgroundColor: 'rgba(0, 0, 255, 0.1)', // subtle blue background
+        color: 'blue'
+        }}
+    }}");
+
+    var annotationsJson = "{" + string.Join(",", spikeAnnotations) + "}";
 }
 
 <h2>Bin Fill Trend</h2>
@@ -17,8 +35,13 @@
 
 <canvas id="fillChart" width="800" height="400"></canvas>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Chart.js & Annotations plugin -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+
 <script>
+    Chart.register(window['chartjs-plugin-annotation']);
+
     const ctx = document.getElementById('fillChart').getContext('2d');
 
     const chart = new Chart(ctx, {
@@ -60,6 +83,9 @@
                 },
                 title: {
                     display: false
+                },
+                annotation: {
+                    annotations: @Html.Raw(annotationsJson)
                 }
             },
             scales: {

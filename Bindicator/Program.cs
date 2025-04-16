@@ -17,6 +17,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Register MQTT background service before building the app
 builder.Services.AddHostedService<MqttSubscriberService>();
+builder.Services.AddScoped<BinDataService>();
+builder.Services.AddScoped<BinTrendService>();
 
 var app = builder.Build();
 
