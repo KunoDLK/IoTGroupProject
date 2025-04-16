@@ -4,6 +4,11 @@ using Bindicator.Models;
 
 public class DbSeeder
 {
+    /// <summary>
+    /// Seeds the database with initial sensor data if no data exists.
+    /// </summary>
+    /// <param name="context">The database context to use for seeding data.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public static async Task SeedAsync(ApplicationDbContext context)
     {
         if (!context.SensorReadings.Any())

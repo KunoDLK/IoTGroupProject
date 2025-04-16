@@ -15,7 +15,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Register MQTT background service before building the app
+// Register background service before building the app
 builder.Services.AddHostedService<MqttSubscriberService>();
 builder.Services.AddScoped<BinDataService>();
 builder.Services.AddScoped<BinTrendService>();
@@ -46,6 +46,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 app.Run();
