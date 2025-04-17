@@ -1,0 +1,122 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|c:\\users\\c2932952\\source\\repos\\iotgroupproject\\bindicator\\views\\dashboard\\_bintable.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|solutionrelative:bindicator\\views\\dashboard\\_bintable.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|c:\\users\\c2932952\\source\\repos\\iotgroupproject\\bindicator\\services\\dbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|solutionrelative:bindicator\\services\\dbseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|c:\\users\\c2932952\\source\\repos\\iotgroupproject\\bindicator\\views\\dashboard\\nodata.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|solutionrelative:bindicator\\views\\dashboard\\nodata.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|c:\\users\\c2932952\\source\\repos\\iotgroupproject\\bindicator\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|solutionrelative:bindicator\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|c:\\users\\c2932952\\source\\repos\\iotgroupproject\\bindicator\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|solutionrelative:bindicator\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|c:\\users\\c2932952\\source\\repos\\iotgroupproject\\bindicator\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DA20EE9D-3639-4826-B543-BB3993A4418C}|Bindicator\\Bindicator.csproj|solutionrelative:bindicator\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_BinTable.cshtml",
+              "DocumentMoniker": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Views\\Dashboard\\_BinTable.cshtml",
+              "RelativeDocumentMoniker": "Bindicator\\Views\\Dashboard\\_BinTable.cshtml",
+              "ToolTip": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Views\\Dashboard\\_BinTable.cshtml",
+              "RelativeToolTip": "Bindicator\\Views\\Dashboard\\_BinTable.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-17T10:17:54.78Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "Bindicator\\Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "Bindicator\\Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-17T10:17:08.885Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NoData.cshtml",
+              "DocumentMoniker": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Views\\Dashboard\\NoData.cshtml",
+              "RelativeDocumentMoniker": "Bindicator\\Views\\Dashboard\\NoData.cshtml",
+              "ToolTip": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Views\\Dashboard\\NoData.cshtml",
+              "RelativeToolTip": "Bindicator\\Views\\Dashboard\\NoData.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-17T10:09:43.018Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Program.cs",
+              "RelativeDocumentMoniker": "Bindicator\\Program.cs",
+              "ToolTip": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Program.cs",
+              "RelativeToolTip": "Bindicator\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-17T09:53:43.134Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DbSeeder.cs",
+              "DocumentMoniker": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Services\\DbSeeder.cs",
+              "RelativeDocumentMoniker": "Bindicator\\Services\\DbSeeder.cs",
+              "ToolTip": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Services\\DbSeeder.cs",
+              "RelativeToolTip": "Bindicator\\Services\\DbSeeder.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAowCMAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-17T09:49:43.124Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "Bindicator\\Controllers\\DashboardController.cs",
+              "ToolTip": "C:\\Users\\C2932952\\Source\\repos\\IoTGroupProject\\Bindicator\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "Bindicator\\Controllers\\DashboardController.cs",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAFcAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-17T09:48:14.304Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
