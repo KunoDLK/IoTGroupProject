@@ -35,6 +35,23 @@
 
 <canvas id="fillChart" width="800" height="400"></canvas>
 
+@if (Model.PredictedFullDate.HasValue && Model.DaysToFull.HasValue)
+{
+    <div class="alert alert-info mt-4">
+        <strong>🧠 Prediction:</strong><br />
+        Based on current trends, this bin is predicted to be full
+        <strong>@Model.DaysToFull.Value.ToString("0.0") days</strong> from the earliest reading,
+        around <strong>@Model.PredictedFullDate.Value.ToLocalTime().ToString("f")</strong>.
+    </div>
+}
+else
+{
+    <div class="alert alert-secondary mt-4">
+        Prediction not available — not enough historical data.
+    </div>
+}
+
+
 <!-- Chart.js & Annotations plugin -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>

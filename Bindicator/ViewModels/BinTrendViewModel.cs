@@ -31,6 +31,10 @@ namespace Bindicator.ViewModels
         /// Gets or sets the list of spike points indicating significant changes in bin levels.
         /// </summary>
         public List<SpikePoint> Spikes { get; set; } = new();
+
+        // Prediction
+        public DateTime? PredictedFullDate { get; set; }
+        public double? DaysToFull { get; set; }
     }
 
     /// <summary>

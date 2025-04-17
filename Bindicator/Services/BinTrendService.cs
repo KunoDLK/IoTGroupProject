@@ -53,13 +53,44 @@ namespace Bindicator.Services
                 }
             }
 
+            // Simple linear regression prediction based on weight
+            DateTime? predictedDate = null;
+            double? daysToFull = null;
+
+            if (readings.Count >= 2)
+            {
+                var x = readings.Select(r => (r.Timestamp - readings[0].Timestamp).TotalDays).ToArray();
+                var y = readings.Select(r => (double)r.Weight).ToArray();
+
+                var n = x.Length;
+                var xAvg = x.Average();
+                var yAvg = y.Average();
+
+                var numerator = x.Zip(y, (xi, yi) => (xi - xAvg) * (yi - yAvg)).Sum();
+                var denominator = x.Sum(xi => Math.Pow(xi - xAvg, 2));
+
+                if (denominator != 0)
+                {
+                    var slope = numerator / denominator;
+                    var intercept = yAvg - slope * xAvg;
+
+                    const double maxWeight = 25.0; // max weight before full
+                    daysToFull = (maxWeight - intercept) / slope;
+
+                    if (daysToFull > 0)
+                        predictedDate = readings[0].Timestamp.AddDays(daysToFull.Value);
+                }
+            }
+
             return new BinTrendViewModel
             {
                 Postcode = postcode,
                 Street = street,
                 BinNumber = binNumber,
                 Readings = readings,
-                Spikes = spikes
+                Spikes = spikes,
+                PredictedFullDate = predictedDate,
+                DaysToFull = daysToFull
             };
         }
     }
