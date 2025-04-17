@@ -33,9 +33,19 @@ namespace Bindicator.Controllers
         /// <returns>The dashboard index view.</returns>
         public async Task<IActionResult> Index()
         {
-            var viewModel = await _binData.GetLatestBinStatusesAsync();
-            return View(viewModel);
+            try
+            {
+                var viewModel = await _binData.GetLatestBinStatusesAsync();
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                // You could log this error to the console, file, or a logger
+                ViewBag.ErrorMessage = "🚫 Unable to load data. Please check your database connection.";
+                return View("NoData");
+            }
         }
+
 
         /// <summary>
         /// Displays the trend view for a specific bin.
@@ -74,5 +84,14 @@ namespace Bindicator.Controllers
 
             return View(bins);
         }
+
+        // Seed data
+        [HttpPost]
+        public async Task<IActionResult> SeedData()
+        {
+            await DbSeeder.SeedAsync(_context);
+            return RedirectToAction("Index"); // or return Json if you're using AJAX
+        }
+
     }
 }
