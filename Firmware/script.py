@@ -1,87 +1,44 @@
-import time
 import json
-import random
+import time
+from dataclasses import dataclass, asdict
 import paho.mqtt.client as mqtt
 
-# === MQTT CONFIG ===
-MQTT_BROKER = 'localhost'
-MQTT_PORT = 1883
-CLIENT_ID = 'raspi-sensor-node'
+@dataclass
+class SensorData:
+    FillLevel: int
+    Weight: float
+    Desnsity: float
 
-# === LOCATION INFO ===
-POSTCODE = 'TS16'
-STREET = 'FORMBY_WALK'
-HOUSE_NUM = '01'
+client = mqtt.Client()
 
-BASE_TOPIC = f"{POSTCODE}/{STREET}/{HOUSE_NUM}"
+mqtt_broker = "c79e2ea5e65e40f6b79ba3a3aad7c19f.s1.eu.hivemq.cloud"
+mqtt_port = 8883
+mqtt_user = "admin"
+mqtt_password = "Password1"
 
-# === TIMING ===
-READ_INTERVAL_SECONDS = 3600  # Once per hour
+Area = "TS16"
+Street = "Formby_walk"
+House = 1
 
+root_topic = f"{Area}/{Street}/{House}"
+sensor_topic = "Sensors/Current"
+full_topic = f"{root_topic}/{sensor_topic}"
 
-# === MQTT SETUP ===
-def connect_mqtt():
-    client = mqtt.Client(client_id=CLIENT_ID, protocol=mqtt.MQTTv311, transport="tcp", callback_api_version=5)
-    client.connect(MQTT_BROKER, MQTT_PORT)
-    return client
+client.username_pw_set(mqtt_user, mqtt_password)
+client.tls_set()  # << Required for port 8883
 
+print("Starting connection to MQTT")
+client.connect(mqtt_broker, mqtt_port)
+client.loop_start()
+print("Connected to MQTT")
 
-# === SENSOR READINGS (replace with real sensors) ===
-def read_sensor_data():
-    return {
-        "fillLevel": random.randint(0, 100),
-        "weight": round(random.uniform(10.0, 20.0), 2),
-        "density": round(random.uniform(1.0, 2.0), 2)
-    }
+data = SensorData(100, 50.0, 10)
+payload = json.dumps(asdict(data))
 
-
-def read_environment_current():
-    return {
-        "temp": round(random.uniform(15.0, 25.0), 1),
-        "humidity": random.randint(40, 70)
-    }
-
-
-def read_environment_daily():
-    low = round(random.uniform(5.0, 10.0), 1)
-    high = round(random.uniform(20.0, 25.0), 1)
-    return {
-        "low": low,
-        "high": high
-    }
-
-
-# === PUBLISH FUNCTION ===
-def publish_data(mqtt_client, topic, data):
-    json_payload = json.dumps(data)
-    print(f"Publishing to {topic}: {json_payload}")
-    mqtt_client.publish(topic, json_payload)
-
-
-# === MAIN LOOP ===
-def main():
-    mqtt_client = connect_mqtt()
-    print("MQTT connected. Starting hourly data reporting...")
-
-    while True:
-        # Sensor Data
-        sensor_data = read_sensor_data()
-        publish_data(mqtt_client, f"{BASE_TOPIC}/Sensors/Current", sensor_data)
-
-        # Environment Data
-        env_current = read_environment_current()
-        publish_data(mqtt_client, f"{BASE_TOPIC}/Environment/Current", env_current)
-
-        # Daily Summary
-        env_daily = read_environment_daily()
-        publish_data(mqtt_client, f"{BASE_TOPIC}/Environment/Daily", env_daily)
-
-        # Wait 1 hour
-        time.sleep(READ_INTERVAL_SECONDS)
-
-
-if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\nStopped by user.")
+while True:
+    start = time.time()
+    info = client.publish(full_topic, payload, qos=2)
+    info.wait_for_publish()
+    end = time.time()
+    print(f"Sent test data in {end - start:.3f} seconds")
+    time.sleep(1)
