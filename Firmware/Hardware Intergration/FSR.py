@@ -16,7 +16,7 @@ def read_channel(channel):
 try:
     while True:
         value = read_channel(0)
-        voltage = value * 3.3 / 1023  # Assuming Vref = 3.3V
+        voltage = value * 5 / 1023  # Assuming Vref = 3.3V
         print(f"Channel 0: {value} (~{voltage:.2f} V)")
         time.sleep(1)
 except KeyboardInterrupt:
