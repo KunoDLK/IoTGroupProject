@@ -1,5 +1,7 @@
 import json
 import time
+import threading
+import requests
 import spidev
 from dataclasses import dataclass, asdict
 import paho.mqtt.client as mqtt
@@ -9,6 +11,11 @@ class SensorData:
     FillLevel: int
     Weight: float
     Desnsity: float
+
+@dataclass
+class EnvironmentData:
+    Temp: int
+    Humidity: int
 
 class ADCReader:
     def __init__(self, bus=0, device=0, speed=1350000):
@@ -26,6 +33,49 @@ class ADCReader:
     def close(self):
         self.spi.close()
 
+class Weather:
+    def __init__(self, city='Middlesbrough'):
+        self.city = city
+
+    def GetTemp(self):
+        url = f'https://wttr.in/{self.city}?format=%t'
+        response = requests.get(url)
+        return response.text.strip()
+    
+    def GetHumidity(self):
+        url = f'https://wttr.in/{self.city}?format=%h'
+        response = requests.get(url)
+        return response.text.strip()
+
+
+def sensor_loop():
+    while True:
+        weightPercentage = (weightReader.read_channel(0) / 750.0) * 100
+        fillPercentage = weightPercentage
+        
+        if fillPercentage > 0.0:
+            density = weightPercentage / fillPercentage
+        else:
+            density = 1  # or handle it another way
+
+        data = SensorData(int(round(weightPercentage)), int(round(weightPercentage)), int(round(density)))
+        payload = json.dumps(asdict(data))
+        
+        client.publish(sensors_topic, payload, qos=2)
+        time.sleep(10)
+
+
+def weather_loop():
+    weather = Weather()
+
+    while True:
+        data = EnvironmentData(weather.GetTemp(), weather.GetHumidity())
+        payload = json.dumps(asdict(data))
+        
+        client.publish(environment_topic, payload, qos=2)
+        time.sleep(60)
+
+
 client = mqtt.Client()
 weightReader = ADCReader()
 
@@ -39,8 +89,11 @@ Street = "Formby_walk"
 House = 1
 
 root_topic = f"{Area}/{Street}/{House}"
-sensor_topic = "Sensors/Current"
-full_topic = f"{root_topic}/{sensor_topic}"
+sensor_topic_extension = "Sensors"
+environment_topic_extension = "Environment"
+realtime_topic_extension = "Current"
+sensors_topic = f"{root_topic}/{sensor_topic_extension}/{realtime_topic_extension}"
+environment_topic = f"{root_topic}/{environment_topic_extension}/{realtime_topic_extension}"
 
 client.username_pw_set(mqtt_user, mqtt_password)
 client.tls_set()  # << Required for port 8883
@@ -50,14 +103,7 @@ client.connect(mqtt_broker, mqtt_port)
 client.loop_start()
 print("Connected to MQTT")
 
-while True:
-    weightPercentage = (weightReader.read_channel(0) / 750.0) * 100
-    data = SensorData(100, int(round(weightPercentage)), 10)
-    payload = json.dumps(asdict(data))
-    
-    start = time.time()
-    info = client.publish(full_topic, payload, qos=2)
-    info.wait_for_publish()
-    end = time.time()
-    print(f"Sent data in {end - start:.3f} seconds")
-    time.sleep(0.25)
+sensor_thread = threading.Thread(target=sensor_loop, daemon=True)
+sensor_thread.start()
+
+weather_loop()
