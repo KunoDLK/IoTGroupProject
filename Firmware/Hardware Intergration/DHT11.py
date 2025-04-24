@@ -1,11 +1,13 @@
-from gpiozero import DistanceSensor
-from time import sleep
+import adafruit_dht
+import board
 
-sensor = DistanceSensor(echo=17, trigger=27)
+dht_device = adafruit_dht.DHT11(board.D4)
 
-try:
-    while True:
-        distance_cm = sensor.distance * 100
-        print(f"Distance: {distance_cm:.1f} cm")
-except KeyboardInterrupt:
-    print("Stopped")
+while True:
+    try:
+        temperature = dht_device.temperature
+        humidity = dht_device.humidity
+    except RuntimeError as e:
+        print(f"DHT error: {e}")
+        temperature = None
+        humidity = None
