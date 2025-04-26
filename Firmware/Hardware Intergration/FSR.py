@@ -15,3 +15,33 @@ class ADCReader:
 
     def close(self):
         self.spi.close()
+
+
+import time
+import math
+
+weightReader = ADCReader()
+lastPrintedWeight = -100.0
+lastPrintTime = time.time()
+
+try:
+    while True:
+        adc_value = weightReader.read_channel(0)
+        voltage = (adc_value / 1024.0) * 5.0  # Convert ADC count to voltage
+        weight =  0.2 * math.exp(voltage)   # Since a=1 and b=1, F = e^(V)
+
+        currentTime = time.time()
+        
+        if abs(weight - lastPrintedWeight) > 1:
+            print("Weight: {:.2f}KG".format(weight))
+            lastPrintedWeight = weight
+            lastPrintTime = currentTime
+        elif currentTime - lastPrintTime >= 0.5:
+            print("Weight: {:.2f}KG".format(weight))
+            lastPrintedWeight = weight
+            lastPrintTime = currentTime
+
+        time.sleep(0.05)  # 10ms
+
+except KeyboardInterrupt:
+    print("\nProgram stopped by user.")
