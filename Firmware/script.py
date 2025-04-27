@@ -235,7 +235,7 @@ def sensor_loop():
         print(data)
 
         client.publish(sensors_topic, payload, qos=2)
-        time.sleep(2)
+        time.sleep(60)
 
 def weather_loop():
     while True:
@@ -246,7 +246,7 @@ def weather_loop():
         print(data)
         
         client.publish(environment_topic, payload, qos=2)
-        time.sleep(2)
+        time.sleep(60)
 
 
 client = mqtt.Client()
