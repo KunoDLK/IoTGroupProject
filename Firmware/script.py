@@ -13,12 +13,16 @@ from dataclasses import dataclass, asdict
 binDepth = 0.25
 binWidth = 0.15
 binEmptyWeight = 0.5
+lat = 54.523869
+lon = -1.3515934
 
 @dataclass
 class SensorData:
     FillLevel: int
     Weight: float
     Density: float
+    Latitude: float
+    Longitude: float
 
 @dataclass
 class EnvironmentData:
@@ -230,12 +234,12 @@ def sensor_loop():
         else:
             density = 0  # or another fallback
 
-        data = SensorData(round(fillPercentage, 1), round(weight, 1), round(density, 1))
+        data = SensorData(round(fillPercentage, 1), round(weight, 1), round(density, 1), round(lat, 3), round(lon, 3))
         payload = json.dumps(asdict(data))
         print(data)
 
         client.publish(sensors_topic, payload, qos=2)
-        time.sleep(60)
+        time.sleep(300)
 
 def weather_loop():
     while True:
@@ -246,7 +250,7 @@ def weather_loop():
         print(data)
         
         client.publish(environment_topic, payload, qos=2)
-        time.sleep(60)
+        time.sleep(900)
 
 
 client = mqtt.Client()
