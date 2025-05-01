@@ -1,0 +1,4 @@
+[submodule "Bindicator"]
+	path = Bindicator
+	url = https://github.com/Ditchy23/Bindicator.git
+	branch = ml-analysis
