@@ -1,0 +1,37 @@
+[
+    {
+        "bin_id": 1,
+        "average_fill_percent": 69.31,
+        "near_full_days": 4,
+        "total_days_monitored": 29,
+        "recommendation": "Bin has been near full for 4 out of 29 days monitored. \u2705 Current bin size is appropriate."
+    },
+    {
+        "bin_id": 2,
+        "average_fill_percent": 95.0,
+        "near_full_days": 29,
+        "total_days_monitored": 29,
+        "recommendation": "Bin has been near full for 29 out of 29 days monitored. \u26a0\ufe0f Consider a larger bin or more frequent collection."
+    },
+    {
+        "bin_id": 3,
+        "average_fill_percent": 41.6,
+        "near_full_days": 0,
+        "total_days_monitored": 29,
+        "recommendation": "Bin has been near full for 0 out of 29 days monitored. \u2705 Current bin size is appropriate."
+    },
+    {
+        "bin_id": 4,
+        "average_fill_percent": 33.55,
+        "near_full_days": 0,
+        "total_days_monitored": 29,
+        "recommendation": "Bin has been near full for 0 out of 29 days monitored. \u2705 Current bin size is appropriate."
+    },
+    {
+        "bin_id": 5,
+        "average_fill_percent": 38.01,
+        "near_full_days": 0,
+        "total_days_monitored": 29,
+        "recommendation": "Bin has been near full for 0 out of 29 days monitored. \u2705 Current bin size is appropriate."
+    }
+]
