@@ -1,3 +1,4 @@
 .DS_Store
 PCB/Pi Hat/Pi Hat-backups
 *.FCBAK
+*.lck
